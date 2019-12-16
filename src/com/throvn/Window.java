@@ -8,6 +8,7 @@ public class Window {
     private ChatWindow cw;
     private WhatsClient wc = new WhatsClient("localhost", 3000, this);
     private Login l;
+    private CreateGroup cg;
 
     public Window() {
         l = new Login(wc);
@@ -20,9 +21,11 @@ public class Window {
     }
 
     public void drawChats(ArrayList<Chat> chatList) {
-        chatList.forEach((n) -> {
-            cw.addChat(n.getUser(), n.getMsg());
-        });
+        String msg = "";
+        for (int i = 0; i < chatList.size(); i++) {
+            msg += chatList.get(i).getUser() + ":   " + chatList.get(i).getMsg() + "<br>";
+        }
+        cw.addChat(msg);
     }
 
     public void pressed(ActionEvent a) {
@@ -38,5 +41,9 @@ public class Window {
 
     public void getChat(int groupID) {
         wc.send("SEND CHAT;"+groupID);
+    }
+
+    public void openCreateGroup() {
+        cg = new CreateGroup(wc);
     }
 }

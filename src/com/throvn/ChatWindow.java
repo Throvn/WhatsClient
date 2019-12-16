@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class ChatWindow implements ActionListener {
     private ArrayList<String[]> groupData = new ArrayList<>();
-    public JPanel panel;
     private DefaultListModel<String> list = new DefaultListModel<>();
     private JList groups = new JList(list);
     private JTextPane chatDisplay = new JTextPane();
@@ -31,8 +30,10 @@ public class ChatWindow implements ActionListener {
         f.setLayout(new BorderLayout());
 
         groups.setPreferredSize(new Dimension(f.getWidth() / 3, f.getHeight() / 2));
-
         groups.setBorder(BorderFactory.createMatteBorder(0,0,0,1, Color.lightGray));
+
+        chatDisplay.setEditable(false);
+        chatDisplay.setContentType("text/html");
 
         f.add(groups, BorderLayout.LINE_START);
         f.add(chatDisplay, BorderLayout.CENTER);
@@ -41,9 +42,15 @@ public class ChatWindow implements ActionListener {
         controls.setLayout(new BorderLayout());
 
         JButton createGroup = new JButton("Create Group");
-        JButton joinGroup = new JButton("Join Group");
-        controls.add(createGroup, BorderLayout.LINE_START);
-        controls.add(joinGroup, BorderLayout.WEST);
+        createGroup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(((JButton)e.getSource()).getText());
+                win.openCreateGroup();
+            }
+        });
+        controls.add(createGroup, BorderLayout.WEST);
+
 
         f.add(controls, BorderLayout.PAGE_END);
 
@@ -74,14 +81,11 @@ public class ChatWindow implements ActionListener {
         f.setVisible(true);
     }
 
-    public void addChat(String name, String msg) {
-        chatDisplay.setText(name+":   "+msg);
-
-
+    public void addChat(String msg) {
+        chatDisplay.setText(msg);
     }
 
     public void actionPerformed(ActionEvent a) {
         win.pressed(a);
-
     }
 }
