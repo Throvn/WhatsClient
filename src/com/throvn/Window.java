@@ -7,19 +7,10 @@ import java.awt.event.ActionEvent;
 public class Window {
     private ChatWindow cw;
     private WhatsClient wc = new WhatsClient("localhost", 3000, this);
+    private Login l;
 
     public Window() {
-        cw = new ChatWindow(this);
-
-        JFrame frame = new JFrame();
-        frame.setTitle("Welcome to WhatsChat.");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(cw.panel);
-        frame.setSize(300, 500);
-        frame.pack();
-        frame.setVisible(true);
-
-        wc.send("LOG IN;Louis1,Stanko");
+        l = new Login(wc);
     }
 
     public void drawGroups(ArrayList<Group> groupList) {
@@ -37,5 +28,15 @@ public class Window {
     public void pressed(ActionEvent a) {
         JButton button = (JButton) a.getSource();
         System.out.println(button.getText() + " : "+ button.getClientProperty("id"));
+    }
+
+    public void loggedIn() {
+        l.dispose();
+        l = null;
+        cw = new ChatWindow(this);
+    }
+
+    public void getChat(int groupID) {
+        wc.send("SEND CHAT;"+groupID);
     }
 }

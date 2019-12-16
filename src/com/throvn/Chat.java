@@ -1,5 +1,6 @@
 package com.throvn;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Chat {
@@ -9,7 +10,7 @@ public class Chat {
 
     public Chat(String user, String msg, String time) {
         this.msg = msg;
-        this.time = new Date(time).getHours() + ":" + new Date(time).getMinutes() ;
+        this.time = time.split(" ")[1];
         this.user = user;
     }
 

@@ -20,9 +20,10 @@ public class WhatsClient extends Client {
 
     @Override
     public void processMessage(String pMessage) {
-        if (pMessage.contains("CREATED,USER") || pMessage.contains("LOGGED_IN")) {
+        if (pMessage.contains("CREATED,USER") || pMessage.contains("LOGGED_IN")) { // Denkfehler Created user does not send id yet.
             myID = Integer.parseInt(pMessage.split("LOGGED_IN ")[1]);
             send("SEND GROUPS");
+            win.loggedIn();
         } else if (pMessage.contains("CREDENTIALS_WRONG")) {
             System.out.println("Wrong credentials");
         } else if (pMessage.indexOf("GROUPS") == 0) {
@@ -36,7 +37,8 @@ public class WhatsClient extends Client {
         } else if (pMessage.indexOf("GET CHAT") == 0) {
             msgs = new ArrayList<>();
             String [] m = pMessage.split("::::");
-            for (int i = 0; i < m.length-1; i = i+3) {
+            for (int i = 1; i < m.length-1; i = i+3) {
+                System.out.println(m[i] + "  " + m[i+1] + "  " + m[i+2]);
                 msgs.add(new Chat(m[i], m[i+1], m[i+2]));
             }
             win.drawChats(msgs);
