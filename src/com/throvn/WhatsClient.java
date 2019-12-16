@@ -1,14 +1,10 @@
 package com.throvn;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.*;
 
 
 public class WhatsClient extends Client {
-//    private GUI_Login login;
-//    private GUI_Chat mainWindow;
     private int myID = -1;
     private Window win;
     public ArrayList<Chat> msgs = new ArrayList<>();
@@ -44,19 +40,17 @@ public class WhatsClient extends Client {
             win.drawChats(msgs);
         } else if (pMessage.indexOf("RECIVE MESSAGE") == 0) {
             String[] m = pMessage.split("::::");
-            String[] ms = Arrays.copyOfRange(m, 1, m.length-2);
-            msgs.add(new Chat(m[1], String.join("::::", ms), m[m.length-1]));
+            String[] ms = Arrays.copyOfRange(m, 3, m.length);
+            msgs.add(new Chat(m[1], String.join("::::", ms), m[2]));
             win.drawChats(msgs);
-
+            System.out.println(msgs.toString());
+        } else if (pMessage.indexOf("SUCCESS;CREATED,GROUP") == 0) {
+            win.closeCreatedGroup();
+            send("SEND GROUPS");
         }
     }
 
     public int getMyID() {
         return myID;
     }
-
-    // Malt die Gruppen auf den Screen
-    public void drawGroups(List<Group> list) {}
-
-    public void drawChats(List<Chat> msgs) {}
 }

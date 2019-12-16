@@ -9,12 +9,14 @@ public class Window {
     private WhatsClient wc = new WhatsClient("localhost", 3000, this);
     private Login l;
     private CreateGroup cg;
+    private int activeGroupID = -1;
 
     public Window() {
         l = new Login(wc);
     }
 
     public void drawGroups(ArrayList<Group> groupList) {
+        cw.clearGroups();
         groupList.forEach((n) -> {
             cw.addGroup(n.getName(), n.getId());
         });
@@ -41,9 +43,21 @@ public class Window {
 
     public void getChat(int groupID) {
         wc.send("SEND CHAT;"+groupID);
+        activeGroupID = groupID;
     }
 
     public void openCreateGroup() {
         cg = new CreateGroup(wc);
+    }
+
+    public void sendMsg(String msg) {
+        System.out.println("MSG: "+msg);
+        if (activeGroupID != -1 && msg != "") {
+            wc.send("SEND TO;"+activeGroupID+","+msg);
+        }
+    }
+
+    public void closeCreatedGroup() {
+        cg.dispose();
     }
 }

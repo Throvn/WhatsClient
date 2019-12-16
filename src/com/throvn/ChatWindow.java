@@ -49,8 +49,22 @@ public class ChatWindow implements ActionListener {
                 win.openCreateGroup();
             }
         });
+
         controls.add(createGroup, BorderLayout.WEST);
 
+        JTextField messageField = new JTextField();
+        messageField.setText("Message");
+        messageField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == 10) {
+                    JTextField msg = (JTextField)e.getSource();
+                    win.sendMsg(msg.getText().replace("\n", ""));
+                }
+            }
+        });
+
+        controls.add(messageField, BorderLayout.CENTER);
 
         f.add(controls, BorderLayout.PAGE_END);
 
@@ -79,6 +93,10 @@ public class ChatWindow implements ActionListener {
         list.addElement(name);
 
         f.setVisible(true);
+    }
+
+    public void clearGroups() {
+        groupData.clear();
     }
 
     public void addChat(String msg) {
